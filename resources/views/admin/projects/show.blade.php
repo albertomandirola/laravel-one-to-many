@@ -8,6 +8,7 @@
             </div>
             <div class="col-8">
                 <h2>{{ $project->title }}</h2>
+                <p>Tipologia progetto: {{ $project->type ? $project->type->name : 'Non inserito' }}</p>
                 <a href="{{ $project->link }}">link alla pagina git-hub</a>
                 <p>{{ $project->description }}</p>
                 <p>{{ $project->slug }}</p>

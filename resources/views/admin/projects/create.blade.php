@@ -32,6 +32,20 @@
                                 @enderror
                             </div>
 
+                            <div class="form-group ">
+                                <label for="type_id" class="control-label m-1 text-danger ">Tipo di progetto</label>
+                                <select name="type_id" id="type_id"
+                                    class="form-select @error('type_id') is-invalid @enderror">
+                                    <option value="">Seleziona tipo di progetto</option>
+                                    @foreach ($types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
+                                    @error('type_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="link" class="control-label">Link</label>
                                 <input type="text" class="form-control @error('link') is-invalid @enderror"

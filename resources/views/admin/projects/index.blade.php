@@ -18,18 +18,18 @@
                             <th scope="col">Titolo</th>
                             <th scope="col">slug</th>
                             <th scope="col">link</th>
-
+                            <th scope="col">Tipo di progetto</th>
                             <th scope="col">Tools</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($projects as $project)
                             <tr>
-                                <th scope="row">{{ $project->id }}</th>
+                                <td scope="row">{{ $project->id }}</td>
                                 <td>{{ $project->title }}</td>
                                 <td>{{ $project->slug }}</td>
                                 <td>{{ $project->link }}</td>
-
+                                <td>{{ $project->type ? $project->type->name : 'Non inserito' }}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
 
