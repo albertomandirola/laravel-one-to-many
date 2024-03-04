@@ -18,6 +18,7 @@
                         @endif
 
                         <a href="{{ route('admin.projects.index') }}">projects</a>
+                        <a href="{{ route('admin.types.index') }}">types</a>
 
                     </div>
                 </div>

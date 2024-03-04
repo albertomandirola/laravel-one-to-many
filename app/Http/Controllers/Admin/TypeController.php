@@ -21,7 +21,7 @@ class TypeController extends Controller
     public function index()
     {
         $types = Type::all();
-        return view('admin.type.index', compact('types'));
+        return view('admin.types.index', compact('types'));
     }
 
     /**
@@ -32,7 +32,7 @@ class TypeController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.type.create', compact('types'));
+        return view('admin.types.create', compact('types'));
     }
 
     /**
@@ -66,7 +66,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        return view('admin.type.show', compact('type'));
+        return view('admin.types.show', compact('type'));
     }
 
     /**
@@ -75,9 +75,14 @@ class TypeController extends Controller
      * @param  \App\Models\Type  $type
      * @return \Illuminate\Http\Response
      */
-    public function edit(Type $type)
+    public function edit(Type $type,Request $request)
     {
-        return view('admin.type.edit', compact('type'));
+        $error_message = '';
+        if (!empty($request->all())) {
+            $messages = $request->all();
+            $error_message = $messages['error_message'];
+        }
+        return view('admin.types.edit' , compact('type','error_message'));
     }
 
     /**
@@ -91,10 +96,14 @@ class TypeController extends Controller
     {
         $form_data = $request->all();
 
-        $exists = Type::where('name', 'LIKE', $form_data['name'])->where('id', '!=', $type->id)->get();
-        if (count($exists) > 0) {
+        $exists = Type::where('name','LIKE', $form_data['name'])
+        ->where('id', '!=', $type->id)
+        ->exists();
+        
+
+        if ($exists) {
             $error_message = 'The type name already exist!';
-            return redirect()->route('admin.types.edit', ['type' =>  $type->slug], compact('error_message'));
+            return redirect()->route('admin.types.edit', compact('type', 'error_message'));
         }
 
         $slug = Str::slug($form_data['name'], '-');
