@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Faker\Generator as Faker;
+use Illuminate\Support\Str;
+
 class TypeSeeder extends Seeder
 {
     /**
@@ -12,8 +15,13 @@ class TypeSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(Faker $faker)
     {
-        //
+        for ($i = 0; $i < 5; $i++) {
+            $newProject = new Type();
+            $newProject->name = $faker->unique()->word();
+            $newProject->slug = Str::slug($newProject->name, '-');
+            $newProject->save();
+        }
     }
 }
