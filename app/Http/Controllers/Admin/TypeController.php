@@ -20,7 +20,8 @@ class TypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = Type::all();
+        return view('admin.type.index', compact('types'));
     }
 
     /**
@@ -30,7 +31,8 @@ class TypeController extends Controller
      */
     public function create()
     {
-        //
+        $types = Type::all();
+        return view('admin.type.create', compact('types'));
     }
 
     /**
@@ -41,7 +43,19 @@ class TypeController extends Controller
      */
     public function store(StoreTypeRequest $request)
     {
-        //
+         
+         $form_data = $request->all();
+
+         $type = new Type;
+
+         $slug = Str::slug($form_data['name'], '-');
+         $form_data['slug'] = $slug;
+
+         $type->fill($form_data);
+ 
+         $type->save();
+
+         return redirect()->route('admin.types.index');
     }
 
     /**
@@ -52,7 +66,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        //
+        return view('admin.type.show', compact('type'));
     }
 
     /**
@@ -63,7 +77,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
-        //
+        return view('admin.type.edit', compact('type'));
     }
 
     /**
@@ -75,7 +89,20 @@ class TypeController extends Controller
      */
     public function update(UpdateTypeRequest $request, Type $type)
     {
-        //
+        $form_data = $request->all();
+
+        $exists = Type::where('name', 'LIKE', $form_data['name'])->where('id', '!=', $type->id)->get();
+        if (count($exists) > 0) {
+            $error_message = 'The type name already exist!';
+            return redirect()->route('admin.types.edit', ['type' =>  $type->slug], compact('error_message'));
+        }
+
+        $slug = Str::slug($form_data['name'], '-');
+        $form_data['slug'] = $slug;
+    
+        $type->update($form_data);
+
+        return redirect()->route('admin.types.index');
     }
 
     /**
@@ -86,6 +113,7 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
-        //
+        $type->delete();
+        return redirect()->route('admin.types.index');
     }
 }
